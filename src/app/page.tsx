@@ -1,5 +1,5 @@
+import MapWrapper from "@/modules/map/components/MapWrapper";
 import SearchComponent from "@/modules/map/components/SearchComponent";
-import Map from "@/shared/components/map/Map";
 
 export default function Home() {
   return (
@@ -8,9 +8,7 @@ export default function Home() {
       <SearchComponent />
 
       {/* map */}
-      <div className="h-screen w-screen">
-        <Map />
-      </div>
+      <MapWrapper />
     </div>
   );
 }
