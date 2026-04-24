@@ -2,9 +2,8 @@
 
 import Map from '@/shared/components/map/Map';
 import { useLazyGetReverseGeocodeQuery } from '@/shared/features/locations/locationApi';
-import { setSearchedText, setSelectedLocation, setOpen } from '@/shared/features/locations/locationSlice';
-import React from 'react';
-import { MapLayerMouseEvent } from 'react-bkoi-gl';
+import { setOpen, setSearchedText, setSelectedLocation } from '@/shared/features/locations/locationSlice';
+import { MapLayerMouseEvent, MapProvider } from 'react-bkoi-gl';
 import { useDispatch } from 'react-redux';
 
 export default function MapWrapper() {
@@ -48,7 +47,9 @@ export default function MapWrapper() {
 
   return (
     <div className="h-screen w-screen">
-      <Map onClick={handleMapClick} />
+      <MapProvider>
+        <Map onClick={handleMapClick} />
+      </MapProvider>
     </div>
   )
 }
