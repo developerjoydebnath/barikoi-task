@@ -18,10 +18,10 @@ export default function Marker() {
     }
   }, [selectedLocation]);
 
-  if (!selectedLocation || !selectedLocation.longitude || !selectedLocation.latitude) return null;
+  const lat = selectedLocation?.latitude !== undefined && selectedLocation?.latitude !== null ? Number(selectedLocation.latitude) : null;
+  const lng = selectedLocation?.longitude !== undefined && selectedLocation?.longitude !== null ? Number(selectedLocation.longitude) : null;
 
-  const lat = Number(selectedLocation.latitude);
-  const lng = Number(selectedLocation.longitude);
+  if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) return null;
 
   // marker click handler
   const onMarkerClick = (e: MarkerEvent<MouseEvent>) => {
@@ -35,9 +35,9 @@ export default function Marker() {
       {open && (
         <Popup anchor='bottom' offset={38} longitude={lng} latitude={lat} onClose={() => setOpen(false)}>
           <div className="flex flex-col text-sm min-w-[120px] max-w-[200px]">
-            <span className="font-semibold text-gray-800">{selectedLocation.address}</span>
+            <span className="font-semibold text-gray-800">{selectedLocation?.address}</span>
             <span className="text-gray-500 text-[11px] mt-0.5 leading-tight">
-              {[selectedLocation.area, selectedLocation.city].filter(Boolean).join(", ")}
+              {[selectedLocation?.area, selectedLocation?.city].filter(Boolean).join(", ")}
             </span>
           </div>
         </Popup>

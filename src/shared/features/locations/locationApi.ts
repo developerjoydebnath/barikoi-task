@@ -12,4 +12,4 @@ export const locationApi = apiSlice.injectEndpoints({
   })
 })
 
-export const { useGetLocationsQuery, useGetReverseGeocodeQuery } = locationApi;
+export const { useGetLocationsQuery, useGetReverseGeocodeQuery, useLazyGetReverseGeocodeQuery } = locationApi;

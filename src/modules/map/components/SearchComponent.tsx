@@ -8,14 +8,22 @@ import useOutsideClick from "@/shared/hooks/useOutSideClick";
 import { RootState } from "@/shared/store/store";
 import { Place } from "@/shared/types/types";
 import { Loader2, MapPin, Menu, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SearchComponent() {
-  const { open, selectedLocation } = useSelector((state: RootState) => state.location);
+  const { open, selectedLocation, searchedText } = useSelector((state: RootState) => state.location);
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Sync local state with redux searchedText
+  useEffect(() => {
+    if (searchedText !== undefined) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSearch(searchedText);
+    }
+  }, [searchedText]);
 
   // Close dropdown when clicking outside
   useOutsideClick(containerRef, () => {
