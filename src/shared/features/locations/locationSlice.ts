@@ -1,17 +1,30 @@
-import { Place } from "@/shared/types/types";
+import { Place, LineStringGeometry } from "@/shared/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 
 export interface LocationState {
   selectedLocation: Place | null;
   searchedText: string;
   open: boolean;
+  isDirectionMode: boolean;
+  startLocation: Place | null;
+  endLocation: Place | null;
+  activeInput: "start" | "end" | null;
+  routeData: LineStringGeometry | null;
+  distance: number | null;
+  duration: number | null;
 }
 
 const initialState: LocationState = {
   selectedLocation: null,
   searchedText: "",
-  open: false
+  open: false,
+  isDirectionMode: false,
+  startLocation: null,
+  endLocation: null,
+  activeInput: null,
+  routeData: null,
+  distance: null,
+  duration: null,
 }
 
 const locationSlice = createSlice({
@@ -26,9 +39,49 @@ const locationSlice = createSlice({
     },
     setOpen: (state, action: PayloadAction<boolean>) => {
       state.open = action.payload;
+    },
+    setDirectionMode: (state, action: PayloadAction<boolean>) => {
+      state.isDirectionMode = action.payload;
+    },
+    setStartLocation: (state, action: PayloadAction<Place | null>) => {
+      state.startLocation = action.payload;
+    },
+    setEndLocation: (state, action: PayloadAction<Place | null>) => {
+      state.endLocation = action.payload;
+    },
+    setActiveInput: (state, action: PayloadAction<"start" | "end" | null>) => {
+      state.activeInput = action.payload;
+    },
+    setRouteData: (state, action: PayloadAction<LineStringGeometry | null>) => {
+      state.routeData = action.payload;
+    },
+    setRouteInfo: (state, action: PayloadAction<{ distance: number; duration: number } | null>) => {
+      state.distance = action.payload?.distance ?? null;
+      state.duration = action.payload?.duration ?? null;
+    },
+    resetDirection: (state) => {
+      state.isDirectionMode = false;
+      state.startLocation = null;
+      state.endLocation = null;
+      state.activeInput = null;
+      state.routeData = null;
+      state.distance = null;
+      state.duration = null;
+      state.selectedLocation = null;
     }
   },
 });
 
-export const { setSelectedLocation, setSearchedText, setOpen } = locationSlice.actions;
+export const { 
+  setSelectedLocation, 
+  setSearchedText, 
+  setOpen, 
+  setDirectionMode, 
+  setStartLocation, 
+  setEndLocation, 
+  setActiveInput,
+  setRouteData,
+  setRouteInfo,
+  resetDirection
+} = locationSlice.actions;
 export default locationSlice.reducer;
