@@ -63,6 +63,8 @@ To scale this application for larger datasets and increased usage, I would prior
 - `modules`: Contains feature-based modules for the application. Each module contains its own state management, components, types, services, and etc.
 - `shared`: Contains the shared components, configs, lib, utils, types, services, store, features, hooks, constants, and etc.
 
+---
+
 ## 5. Setup Instructions
 
 Follow these steps to run the project locally:
