@@ -104,7 +104,7 @@ cp .env.example .env
 
 > Note: if you don't have `.env.example` file, create it manually with the following content:
 ```bash
-BARIKOI_API_KEY=your_api_key
+BARIKOI_API_KEY=
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_API_PREFIX=/api
 NEXT_PUBLIC_APP_NAME="Barikoi Map"
