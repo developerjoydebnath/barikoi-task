@@ -62,3 +62,58 @@ To scale this application for larger datasets and increased usage, I would prior
 - `app`: Contains the main application files, including the root layout, home page, and API routes.
 - `modules`: Contains feature-based modules for the application. Each module contains its own state management, components, types, services, and etc.
 - `shared`: Contains the shared components, configs, lib, utils, types, services, store, features, hooks, constants, and etc.
+
+## 5. Setup Instructions
+
+Follow these steps to run the project locally:
+
+### 1. Clone the repository
+
+Using HTTPS:
+```bash
+git clone https://github.com/developerjoydebnath/barikoi-task.git
+```
+
+Using SSH:
+```bash
+git clone git@github.com:developerjoydebnath/barikoi-task.git
+```
+
+### 2. Navigate to the project directory
+```bash
+cd barikoi-task
+```
+
+### 3. Install dependencies
+
+```bash
+npm install 
+```
+
+> Note: if you face any peer dependency issues, use `npm install --legacy-peer-deps`
+
+### 4. Setup environment variables
+
+Copy the example environment file and fill in the required values:
+
+```bash
+cp .env.example .env
+```
+
+> Note: if you don't have `.env.example` file, create it manually with the following content:
+```bash
+BARIKOI_API_KEY=your_api_key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_PREFIX=/api
+NEXT_PUBLIC_APP_NAME="Barikoi Map"
+NEXT_PUBLIC_APP_DESCRIPTION="Map Integration with Barikoi API"
+```
+
+Edit the `.env` file with your API keys and other configuration values.
+
+### 5. Run the development server
+
+```bash
+npm run dev
+```
+The application will be available at http://localhost:3000

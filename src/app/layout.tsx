@@ -1,4 +1,5 @@
 import { Toaster } from "@/shared/components/ui/sonner";
+import { appConfig } from "@/shared/configs/app.config";
 import { cn } from "@/shared/lib/utils";
 import { StoreProvider } from "@/shared/store/provider";
 import type { Metadata } from "next";
@@ -19,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Barikoi Map",
-  description: "Map Integration with Barikoi API",
+  title: appConfig.APP_NAME,
+  description: appConfig.APP_DESCRIPTION,
 };
 
 export default function RootLayout({
