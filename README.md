@@ -32,9 +32,6 @@ To scale this application for larger datasets and increased usage, I would prior
 - **Map performance optimization:**  
   Implement marker clustering, viewport-based data loading (bounding box queries), and memoization to prevent unnecessary re-renders.
 
-- **Backend/API proxy layer:**  
-  Move API calls to Next.js API routes to securely manage API keys, enforce rate limiting, and centralize business logic.
-
 - **Component architecture improvement:**  
   Further modularize components to improve reusability, maintainability, and testability.
 
@@ -56,12 +53,12 @@ To scale this application for larger datasets and increased usage, I would prior
 - **Reverse Geocoding:** Converts coordinates into readable addresses.
 - **Responsive Layout:** Mobile-first UI built with Tailwind CSS.
 - **State Management:** Managed using Redux Toolkit with RTK Query.
-- **Secure API Handling:** API keys are managed via environment variables and proxied through backend routes.
+- **Secure API Handling:** API keys are managed via environment variables and proxied through Next.JS api routes.
 
 ---
 
 ## 4. Project Structure
 
-- `app`: Core Next.js app (routes, layouts, API routes)
-- `modules`: Feature-based modules (state, components, services)
-- `shared`: Reusable utilities, components, hooks, and configurations
+- `app`: Contains the main application files, including the root layout, home page, and API routes.
+- `modules`: Contains feature-based modules for the application. Each module contains its own state management, components, types, services, and etc.
+- `shared`: Contains the shared components, configs, lib, utils, types, services, store, features, hooks, constants, and etc.
