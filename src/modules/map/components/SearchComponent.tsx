@@ -1,12 +1,13 @@
 'use client'
 
 import { useGetLocationsQuery, useGetReverseGeocodeQuery } from "@/modules/map/features/locationApi";
-import { resetDirection, setActiveInput, setDirectionMode, setEndLocation, setOpen, setSearchedText, setSelectedLocation, setStartLocation } from "@/modules/map/features/locationSlice";
+import { resetDirection, setActiveInput, setDirectionMode, setEndLocation, setOpen, setSearchedText, setSearchResults, setSelectedLocation, setStartLocation } from "@/modules/map/features/locationSlice";
 import useOutsideClick from "@/shared/hooks/useOutSideClick";
 import { RootState } from "@/shared/store/store";
 import { Place } from "@/shared/types/types";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 import DirectionModeInput from "./DirectionModeInput";
 import SearchModeInput from "./SearchModeInput";
 import SearchResults from "./SearchResults";
@@ -74,9 +75,11 @@ export default function SearchComponent() {
   const isError = isLatLng ? isErrorReverse : isErrorAuto;
 
   // handle places
-  const places: Place[] = isLatLng
-    ? (reverseGeocodeData?.place ? [reverseGeocodeData.place] : [])
-    : (autoCompleteData?.places || []);
+  const places: Place[] = search.trim().length === 0
+    ? []
+    : isLatLng
+      ? (reverseGeocodeData?.place ? [{ ...reverseGeocodeData.place, latitude: lat, longitude: lng }] : [])
+      : (autoCompleteData?.places || []);
 
   // place selection
   const handleSelectPlace = (place: Place) => {
@@ -97,13 +100,28 @@ export default function SearchComponent() {
       dispatch(setSearchedText(place.address || ""));
       dispatch(setSelectedLocation(place));
     }
+    dispatch(setSearchResults([]));
     dispatch(setOpen(false));
   };
 
+  // handle search
+  const handleSearch = () => {
+    if (search.trim().length === 0) {
+      toast.error("Please type something to search");
+      return;
+    }
+
+    if (places.length > 0 && !isDirectionMode) {
+      dispatch(setSelectedLocation(null));
+      dispatch(setSearchResults(places));
+      dispatch(setOpen(false));
+    }
+  };
+
   return (
-    <div ref={containerRef} className={`absolute top-6 left-6 z-50 w-full bg-white max-w-[400px] flex flex-col shadow-lg rounded-2xl border border-gray-100 transition-all duration-300 ${isDirectionMode ? 'rounded-xl' : 'rounded-2xl'}`}>
+    <div ref={containerRef} className={`absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto z-50 bg-white sm:w-[400px] flex flex-col shadow-lg border border-gray-100 transition-all duration-300 ${isDirectionMode ? 'rounded-xl' : 'rounded-2xl'}`}>
       {!isDirectionMode ? (
-        <SearchModeInput toggleDirectionMode={toggleDirectionMode} search={search} setSearch={setSearch} />
+        <SearchModeInput toggleDirectionMode={toggleDirectionMode} search={search} setSearch={setSearch} onSearch={handleSearch} />
       ) : (
         <DirectionModeInput toggleDirectionMode={toggleDirectionMode} search={search} setSearch={setSearch} />
       )}

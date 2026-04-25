@@ -16,7 +16,7 @@ The key trade-offs I made include:
   Additional features like history, or saved locations were not implemented.
 
 - **Simplified UI/UX design**  
-  I used Tailwind CSS and shadcn components to build a clean interface quickly, without adding advanced animations or design systems.
+  I used Tailwind CSS to build a clean interface quickly, without adding advanced animations or design systems.
 
 - **Limited optimization of API calls**  
   While debouncing is used in search input, I did not implement request cancellation, rate limiting, or fine-grained caching control.

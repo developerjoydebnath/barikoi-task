@@ -1,8 +1,9 @@
 'use client'
 
 import { DebounceInput } from '@/shared/components/custom/DebounceInput';
+import { Button } from '@/shared/components/ui/button';
 import { RootState } from '@/shared/store/store';
-import { ArrowLeft, ArrowRightLeft, Circle, Square } from 'lucide-react';
+import { ArrowLeft, Circle, Square, X } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveInput, setOpen, setSearchedText } from '../features/locationSlice';
 import { DirectionModeInputsProps } from '../types/map.types';
@@ -14,9 +15,9 @@ export default function DirectionModeInput({ toggleDirectionMode, search, setSea
   return (
     <div className="flex flex-col w-full p-4 gap-3">
       <div className="flex items-center gap-3">
-        <button onClick={toggleDirectionMode} className="text-gray-600 hover:text-gray-900 transition-colors">
-          <ArrowLeft size={22} />
-        </button>
+        <Button onClick={toggleDirectionMode} variant="ghost" size="icon" className="rounded-full hover:bg-blue-50 text-blue-600 hover:text-blue-700">
+          <ArrowLeft size={20} />
+        </Button>
         <div className="flex-1 flex flex-col gap-2 relative">
           {/* Connection Line */}
           <div className="absolute left-[13px] top-[26px] bottom-[26px] w-[2px] border-l-2 border-dotted border-gray-300"></div>
@@ -27,7 +28,7 @@ export default function DirectionModeInput({ toggleDirectionMode, search, setSea
             <DebounceInput
               type="text"
               placeholder="Choose start point..."
-              className="flex-1 h-10 bg-transparent text-sm outline-none text-gray-800"
+              className="flex-1 w-full h-10 bg-transparent text-sm outline-none text-gray-800"
               value={activeInput === 'start' ? search : (startLocation?.address || "")}
               onChange={(val) => {
                 if (activeInput === 'start') {
@@ -49,7 +50,7 @@ export default function DirectionModeInput({ toggleDirectionMode, search, setSea
             <DebounceInput
               type="text"
               placeholder="Choose destination..."
-              className="flex-1 h-10 bg-transparent text-sm outline-none text-gray-800"
+              className="flex-1 w-full h-10 bg-transparent text-sm outline-none text-gray-800"
               value={activeInput === 'end' ? search : (endLocation?.address || "")}
               onChange={(val) => {
                 if (activeInput === 'end') {
@@ -65,9 +66,9 @@ export default function DirectionModeInput({ toggleDirectionMode, search, setSea
             />
           </div>
         </div>
-        <button className="text-gray-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50 transition-all">
-          <ArrowRightLeft size={20} className="rotate-90" />
-        </button>
+        <Button onClick={toggleDirectionMode} variant="ghost" size="icon" className="rounded-full hover:bg-blue-50 text-blue-600 hover:text-blue-700" title="Close">
+          <X size={20} />
+        </Button>
       </div>
 
       {/* Route Summary */}

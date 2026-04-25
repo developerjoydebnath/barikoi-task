@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Barikoi Map Finder
 
-## Getting Started
+A modern, responsive web application for searching locations, viewing them on an interactive map, and getting directions, built with Next.js, Redux Toolkit, and Barikoi Maps.
 
-First, run the development server:
+## 1. What trade-offs did you consciously make due to time constraints?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+When building this application within a limited timeframe, I made a few practical choices to prioritize core functionality:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Simple UI over complex design systems:** I used Tailwind CSS to quickly put together a clean, functional interface. I focused on building an intuitive layout rather than spending time on a heavy, custom design system or advanced micro-animations.
+- **Basic API optimization:** I added debouncing to the search inputs to ensure we don't spam the API on every keystroke. However, I skipped more advanced optimizations like request cancellation, strict rate limiting, or fine-grained cache control.
+- **Essential error handling only:** I focused on handling the most common errors (such as failed search requests or denied location permissions) by showing simple fallback messages. A production app would need a more robust system with user-friendly retry states and error tracking.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 2. If this app needed to scale (more data, more features), what would you refactor first?
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If this application needed to scale to handle thousands of users or significantly more complex data, here is what I would prioritize refactoring:
 
-## Learn More
+- **Implement Rate Limiting and Cache Management:** Implement rate limiting and cache management to reduce redundant requests and improve performance. It will help to handle the large dataset and more features.
+- **Map Performance Optimization:** Handling large datasets on a map can be heavy. To prevent the map from slowing down, I would implement marker clustering, lazy load map data based on the visible bounding box, and heavily optimize to prevent unnecessary map component re-renders.
+- **Further Component Modularization:** I would continue to break down the large components into smaller, focused pieces. I would continue this pattern across the entire application to keep components small, highly reusable, and easier to test.
+- **Advanced Caching:** While RTK Query handles basic caching well, I would fine-tune the cache invalidation strategies to reduce redundant network requests even further, making the application feel instantaneous as users navigate back and forth.
+- **Refine State Management Structure:** I already following modular pattern to manage the state, which makes it easier to maintain and scale. In future I will continue to follow this pattern and refine more to make the code more modular and maintainable and scalable.
 
-To learn more about Next.js, take a look at the following resources:
+## 3. Current Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Interactive Mapping:** Fully interactive map interface utilizing Barikoi Maps.
+- **Smart Location Search:** Fast, debounced autocomplete search to quickly find locations.
+- **Multiple Marker Visualization:** Search results can be plotted as multiple markers on the map for a wider spatial view.
+- **Direction & Routing:** A dedicated direction mode to find the optimal route between a start point and destination, including distance and duration estimates.
+- **Current Location Integration:** Native browser geolocation support to quickly use your current GPS location as a start or end point for directions.
+- **Reverse Geocoding:** Automatically resolves coordinate data into readable street addresses when selecting points on the map or typing coordinates in search bar. It can also resolve coordinates using the browser's geolocation API.
+- **Responsive Layout:** A clean, mobile-first design built with Tailwind CSS that works seamlessly across desktop and mobile devices.
+- **State Management:** Robust application state handling utilizing Redux Toolkit for predictable UI behavior.

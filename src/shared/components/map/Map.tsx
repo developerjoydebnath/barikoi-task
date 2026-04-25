@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DirectionMarkers from './DirectionMarkers';
 import Marker from './Marker';
 import RouteLayer from './RouteLayer';
+import SearchResultsMarkers from './SearchResultsMarkers';
 
 export default function Map({ zoom = 12, center = [90.3938010872331, 23.821600277500405], onClick }: MapComponentProps) {
   const { selectedLocation, isDirectionMode, activeInput } = useSelector((state: RootState) => state.location);
@@ -28,7 +29,34 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
   const lat = selectedLocation?.latitude ? Number(selectedLocation.latitude) : null;
   const lng = selectedLocation?.longitude ? Number(selectedLocation.longitude) : null;
 
-  const { routeData } = useSelector((state: RootState) => state.location);
+  const { routeData, searchResults } = useSelector((state: RootState) => state.location);
+
+  // Fit bounds when search results are available
+  useEffect(() => {
+    if (searchResults && searchResults.length > 0 && map && !isDirectionMode) {
+      let minLng = 180, minLat = 90, maxLng = -180, maxLat = -90;
+      let hasValidCoords = false;
+
+      searchResults.forEach(place => {
+        const lat = Number(place.latitude);
+        const lng = Number(place.longitude);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          hasValidCoords = true;
+          if (lng < minLng) minLng = lng;
+          if (lng > maxLng) maxLng = lng;
+          if (lat < minLat) minLat = lat;
+          if (lat > maxLat) maxLat = lat;
+        }
+      });
+
+      if (hasValidCoords) {
+        map.fitBounds(
+          [[minLng, minLat], [maxLng, maxLat]],
+          { padding: 100, duration: 2000 }
+        );
+      }
+    }
+  }, [searchResults, map, isDirectionMode]);
 
   // Fit bounds when route data is available
   useEffect(() => {
@@ -52,6 +80,7 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
       );
     }
   }, [routeData, map]);
+
 
   const flyTo = (lat: number, lng: number) => {
     if (!map) return;
@@ -82,6 +111,54 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
     }
   }, [lat, lng, map]);
 
+  // Handle geolocate event
+  const handleGeoLocate = async (e: GeolocationPosition) => {
+    const lat = e.coords.latitude;
+    const lng = e.coords.longitude;
+    flyTo(lat, lng);
+
+    if (isDirectionMode && activeInput) {
+      const preliminaryPlace = {
+        latitude: lat,
+        longitude: lng,
+        address: "My Location"
+      };
+
+      if (activeInput === 'start') {
+        dispatch(setStartLocation(preliminaryPlace));
+        dispatch(setActiveInput('end'));
+      } else {
+        dispatch(setEndLocation(preliminaryPlace));
+        dispatch(setActiveInput(null));
+      }
+      dispatch(setOpen(false));
+
+      try {
+        const response = await triggerReverseGeocode({
+          lat: lat.toString(),
+          lng: lng.toString()
+        }).unwrap();
+
+        if (response && response.place) {
+          const finalPlace = {
+            ...response.place,
+            latitude: lat,
+            longitude: lng,
+            address: response.place.address || "My Location"
+          };
+
+          if (activeInput === 'start') {
+            dispatch(setStartLocation(finalPlace));
+          } else {
+            dispatch(setEndLocation(finalPlace));
+          }
+        }
+      } catch (err) {
+        console.error("Geolocate update failed:", err);
+      }
+    }
+  }
+
   return (
     <MapContainer
       {...viewState}
@@ -90,6 +167,7 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
       onClick={onClick}
     >
       {!isDirectionMode && <Marker />}
+      {!isDirectionMode && <SearchResultsMarkers />}
       <DirectionMarkers />
       <RouteLayer />
       <FullscreenControl position='bottom-right' />
@@ -98,52 +176,7 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
         positionOptions={{ enableHighAccuracy: true }}
         showUserLocation={true}
         showAccuracyCircle={false}
-        onGeolocate={async (e) => {
-          const lat = e.coords.latitude;
-          const lng = e.coords.longitude;
-          flyTo(lat, lng);
-
-          if (isDirectionMode && activeInput) {
-            const preliminaryPlace = {
-              latitude: lat,
-              longitude: lng,
-              address: "My Location"
-            };
-
-            if (activeInput === 'start') {
-              dispatch(setStartLocation(preliminaryPlace));
-              dispatch(setActiveInput('end'));
-            } else {
-              dispatch(setEndLocation(preliminaryPlace));
-              dispatch(setActiveInput(null));
-            }
-            dispatch(setOpen(false));
-
-            try {
-              const response = await triggerReverseGeocode({ 
-                lat: lat.toString(), 
-                lng: lng.toString() 
-              }).unwrap();
-              
-              if (response && response.place) {
-                const finalPlace = { 
-                  ...response.place, 
-                  latitude: lat, 
-                  longitude: lng,
-                  address: response.place.address || "My Location"
-                };
-                
-                if (activeInput === 'start') {
-                  dispatch(setStartLocation(finalPlace));
-                } else {
-                  dispatch(setEndLocation(finalPlace));
-                }
-              }
-            } catch (err) {
-              console.error("Geolocate update failed:", err);
-            }
-          }
-        }}
+        onGeolocate={handleGeoLocate}
         position='bottom-right'
       />
       <ScaleControl position='bottom-left' />

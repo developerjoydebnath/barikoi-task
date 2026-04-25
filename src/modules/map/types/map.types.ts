@@ -19,4 +19,5 @@ export type SearchModeInputProps = {
   toggleDirectionMode: () => void
   search: string
   setSearch: (value: string) => void
+  onSearch: () => void
 }

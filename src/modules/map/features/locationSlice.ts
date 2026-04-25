@@ -12,6 +12,7 @@ export interface LocationState {
   routeData: LineStringGeometry | null;
   distance: number | null;
   duration: number | null;
+  searchResults: Place[];
 }
 
 const initialState: LocationState = {
@@ -25,6 +26,7 @@ const initialState: LocationState = {
   routeData: null,
   distance: null,
   duration: null,
+  searchResults: [],
 }
 
 const locationSlice = createSlice({
@@ -33,6 +35,7 @@ const locationSlice = createSlice({
   reducers: {
     setSelectedLocation: (state, action: PayloadAction<Place | null>) => {
       state.selectedLocation = action.payload;
+      state.searchResults = [];
     },
     setSearchedText: (state, action: PayloadAction<string>) => {
       state.searchedText = action.payload;
@@ -59,6 +62,9 @@ const locationSlice = createSlice({
       state.distance = action.payload?.distance ?? null;
       state.duration = action.payload?.duration ?? null;
     },
+    setSearchResults: (state, action: PayloadAction<Place[]>) => {
+      state.searchResults = action.payload;
+    },
     resetDirection: (state) => {
       state.isDirectionMode = false;
       state.startLocation = null;
@@ -68,6 +74,7 @@ const locationSlice = createSlice({
       state.distance = null;
       state.duration = null;
       state.selectedLocation = null;
+      state.searchResults = [];
     }
   },
 });
@@ -82,6 +89,7 @@ export const {
   setActiveInput,
   setRouteData,
   setRouteInfo,
+  setSearchResults,
   resetDirection
 } = locationSlice.actions;
 export default locationSlice.reducer;

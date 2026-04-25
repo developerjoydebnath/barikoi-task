@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/shared/components/ui/button'
 import { ScrollArea } from '@/shared/components/ui/scroll-area'
 import { Loader2, MapPin, Navigation } from 'lucide-react'
 import React from 'react'
@@ -90,9 +91,10 @@ export default function SearchResults({ isFetching, isError, places, search, act
       )}
 
       {!isFetching && !isLocating && (activeInput === 'start' || activeInput === 'end') && search.length === 0 && (
-        <button
-          className="group flex items-start px-4 py-3 hover:bg-gray-50 transition-colors w-full text-left border-b border-gray-50 last:border-0"
+        <Button
+          className="group h-auto flex items-start px-4 py-3 hover:bg-gray-50 transition-colors w-full text-left border-b border-gray-50 last:border-0"
           onClick={handleUseMyLocation}
+          variant="ghost"
         >
           <div className="flex items-center justify-center mt-1 w-8 h-8 rounded-full bg-blue-50 text-blue-600 shrink-0 mr-3 group-hover:bg-blue-100 transition-colors">
             <Navigation size={16} className="fill-blue-600" />
@@ -105,7 +107,7 @@ export default function SearchResults({ isFetching, isError, places, search, act
               Use current GPS location
             </span>
           </div>
-        </button>
+        </Button>
       )}
 
       {!isFetching && isError && (

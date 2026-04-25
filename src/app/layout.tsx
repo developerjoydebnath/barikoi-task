@@ -1,3 +1,4 @@
+import { Toaster } from "@/shared/components/ui/sonner";
 import { cn } from "@/shared/lib/utils";
 import { StoreProvider } from "@/shared/store/provider";
 import type { Metadata } from "next";
@@ -33,7 +34,10 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
       <StoreProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
+        <body className="min-h-full flex flex-col">
+          {children}
+          <Toaster position="bottom-right" richColors />
+        </body>
       </StoreProvider>
     </html>
   );
