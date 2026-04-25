@@ -76,7 +76,7 @@ export default function SearchResults({ isFetching, isError, places, search, act
     );
   };
   return (
-    <ScrollArea className="flex flex-col border-t border-gray-100 max-h-[400px] overflow-y-auto w-full pb-2">
+    <ScrollArea className="flex flex-col border-t border-gray-100 max-h-[400px] overflow-y-auto w-full pb-1">
       {isLocating && (
         <div className="flex items-center justify-center p-6 text-gray-500">
           <Loader2 className="animate-spin mr-2" size={20} />

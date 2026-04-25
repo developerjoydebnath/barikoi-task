@@ -14,7 +14,7 @@ export default function SearchModeInput({ toggleDirectionMode, search, setSearch
   const { selectedLocation } = useSelector((state: RootState) => state.location);
 
   return (
-    <div className="relative flex items-center w-full h-14 overflow-hidden shrink-0">
+    <div className="relative flex items-center w-full h-12 overflow-hidden shrink-0">
       <DebounceInput
         type="text"
         placeholder="Search Barikoi Maps"

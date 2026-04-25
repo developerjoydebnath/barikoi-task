@@ -119,7 +119,7 @@ export default function SearchComponent() {
   };
 
   return (
-    <div ref={containerRef} className={`absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto z-50 bg-white sm:w-[400px] flex flex-col shadow-lg border border-gray-100 transition-all duration-300 ${isDirectionMode ? 'rounded-xl' : 'rounded-2xl'}`}>
+    <div ref={containerRef} className={`absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto z-50 bg-white sm:w-[400px] flex flex-col shadow-lg border border-gray-100 transition-all duration-300 ${isDirectionMode ? 'rounded-lg' : 'rounded-lg'}`}>
       {!isDirectionMode ? (
         <SearchModeInput toggleDirectionMode={toggleDirectionMode} search={search} setSearch={setSearch} onSearch={handleSearch} />
       ) : (

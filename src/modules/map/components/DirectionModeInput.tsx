@@ -13,7 +13,7 @@ export default function DirectionModeInput({ toggleDirectionMode, search, setSea
   const { activeInput, startLocation, endLocation, distance, duration } = useSelector((state: RootState) => state.location);
 
   return (
-    <div className="flex flex-col w-full p-4 gap-3">
+    <div className="flex flex-col w-full p-2.5 gap-3">
       <div className="flex items-center gap-3">
         <Button onClick={toggleDirectionMode} variant="ghost" size="icon" className="rounded-full hover:bg-blue-50 text-blue-600 hover:text-blue-700">
           <ArrowLeft size={20} />
