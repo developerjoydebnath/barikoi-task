@@ -1,19 +1,23 @@
 'use client'
 
+import { useLazyGetReverseGeocodeQuery } from '@/modules/map/features/locationApi';
+import { setActiveInput, setEndLocation, setOpen, setStartLocation } from '@/modules/map/features/locationSlice';
 import { RootState } from '@/shared/store/store';
 import { MapComponentProps } from '@/shared/types/types';
 import { getDistance } from '@/shared/utils/getDistance';
 import { getDuration } from '@/shared/utils/getDuration';
 import { useEffect, useState } from 'react';
 import { FullscreenControl, GeolocateControl, Map as MapContainer, NavigationControl, ScaleControl, useMap } from 'react-bkoi-gl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DirectionMarkers from './DirectionMarkers';
 import Marker from './Marker';
 import RouteLayer from './RouteLayer';
 
 export default function Map({ zoom = 12, center = [90.3938010872331, 23.821600277500405], onClick }: MapComponentProps) {
-  const { selectedLocation, isDirectionMode } = useSelector((state: RootState) => state.location);
+  const { selectedLocation, isDirectionMode, activeInput } = useSelector((state: RootState) => state.location);
   const { current: map } = useMap();
+  const dispatch = useDispatch();
+  const [triggerReverseGeocode] = useLazyGetReverseGeocodeQuery();
 
   const [viewState, setViewState] = useState({
     longitude: center[0],
@@ -94,7 +98,52 @@ export default function Map({ zoom = 12, center = [90.3938010872331, 23.82160027
         positionOptions={{ enableHighAccuracy: true }}
         showUserLocation={true}
         showAccuracyCircle={false}
-        onGeolocate={(e) => flyTo(e.coords.latitude, e.coords.longitude)}
+        onGeolocate={async (e) => {
+          const lat = e.coords.latitude;
+          const lng = e.coords.longitude;
+          flyTo(lat, lng);
+
+          if (isDirectionMode && activeInput) {
+            const preliminaryPlace = {
+              latitude: lat,
+              longitude: lng,
+              address: "My Location"
+            };
+
+            if (activeInput === 'start') {
+              dispatch(setStartLocation(preliminaryPlace));
+              dispatch(setActiveInput('end'));
+            } else {
+              dispatch(setEndLocation(preliminaryPlace));
+              dispatch(setActiveInput(null));
+            }
+            dispatch(setOpen(false));
+
+            try {
+              const response = await triggerReverseGeocode({ 
+                lat: lat.toString(), 
+                lng: lng.toString() 
+              }).unwrap();
+              
+              if (response && response.place) {
+                const finalPlace = { 
+                  ...response.place, 
+                  latitude: lat, 
+                  longitude: lng,
+                  address: response.place.address || "My Location"
+                };
+                
+                if (activeInput === 'start') {
+                  dispatch(setStartLocation(finalPlace));
+                } else {
+                  dispatch(setEndLocation(finalPlace));
+                }
+              }
+            } catch (err) {
+              console.error("Geolocate update failed:", err);
+            }
+          }
+        }}
         position='bottom-right'
       />
       <ScaleControl position='bottom-left' />

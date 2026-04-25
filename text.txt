@@ -1,29 +1,30 @@
-## 1. Trade-offs due to time constraints
+## 1. What trade-offs did you consciously make due to time constraints?
 
-Due to the limited time, I focused on delivering a stable and functional core experience rather than implementing advanced optimizations or extended features.
+Due to time constraints, I focused on delivering a stable and functional core experience using Next.js, TypeScript, Redux Toolkit (RTK Query), and Barikoi APIs, while postponing some advanced optimizations.
 
-Some conscious trade-offs I made:
+The key trade-offs I made include:
 
-- **Basic UI over polished design**  
-  I prioritized functionality (search + map interaction) instead of spending extra time on advanced UI/UX animations or design refinements.
+- **Used RTK Query with basic configuration**  
+  I implemented API calls using Redux Toolkit Query, which provides built-in caching and state management. However, I did not fully optimize it with features like cache invalidation strategies, polling, or advanced query lifecycle handling.
 
-- **Minimal error handling**  
-  I handled essential edge cases (invalid coordinates, null values), but did not implement a fully robust error handling or retry system for API failures.
+- **Focused on core features over extended functionality**  
+  I prioritized essential features such as:
+  - location search
+  - map rendering using react-bkoi-gl
+  - selecting locations from the map
+  - route direction between two points  
+  Additional features like history, or saved locations were not implemented.
 
-- **No API response caching**  
-  Each search request directly calls the API. For a production-ready system, caching (e.g., using SWR/React Query or backend caching) would reduce redundant API calls.
+- **Simplified UI/UX design**  
+  I used Tailwind CSS and shadcn components to build a clean interface quickly, without adding advanced animations or design systems.
 
-- **Simplified state management**  
-  Redux is used, but the structure is kept simple. In a larger system, I would modularize slices and normalize state more strictly.
+- **Limited optimization of API calls**  
+  While debouncing is used in search input, I did not implement request cancellation, rate limiting, or fine-grained caching control.
 
-- **No debouncing for search input (if applicable)**  
-  To save time, I did not fully optimize API calls for search input using debouncing/throttling.
+- **Basic error handling**  
+  Only essential validation and fallback handling are included. A more robust system would include user-friendly error states and retry mechanisms.
 
-These decisions allowed me to ensure the core features were reliable while acknowledging areas for future improvement.
-|
-
-
-
+These trade-offs allowed me to complete the core requirements efficiently while keeping the codebase clean and maintainable.
 
 
 ## 2. Refactoring for scalability
