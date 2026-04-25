@@ -1,7 +1,8 @@
 import { createBarikoiClient } from "barikoiapis";
+import { appConfig } from "../configs/app.config";
 
 const barikoiClient = createBarikoiClient({
-  apiKey: process.env.BARIKOI_API_KEY as string
+  apiKey: appConfig.BARIKOI_API_KEY
 });
 
 export default barikoiClient;

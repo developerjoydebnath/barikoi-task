@@ -1,9 +1,9 @@
 'use client'
 
+import { useGetLocationsQuery, useGetReverseGeocodeQuery } from "@/modules/map/features/locationApi";
+import { resetDirection, setActiveInput, setDirectionMode, setEndLocation, setOpen, setSearchedText, setSelectedLocation, setStartLocation } from "@/modules/map/features/locationSlice";
 import { DebounceInput } from "@/shared/components/custom/DebounceInput";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
-import { useGetLocationsQuery, useGetReverseGeocodeQuery } from "@/shared/features/locations/locationApi";
-import { resetDirection, setActiveInput, setDirectionMode, setEndLocation, setOpen, setSearchedText, setSelectedLocation, setStartLocation } from "@/shared/features/locations/locationSlice";
 import useOutsideClick from "@/shared/hooks/useOutSideClick";
 import { RootState } from "@/shared/store/store";
 import { Place } from "@/shared/types/types";

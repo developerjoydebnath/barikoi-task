@@ -1,0 +1,60 @@
+## 1. Trade-offs due to time constraints
+
+Due to the limited time, I focused on delivering a stable and functional core experience rather than implementing advanced optimizations or extended features.
+
+Some conscious trade-offs I made:
+
+- **Basic UI over polished design**  
+  I prioritized functionality (search + map interaction) instead of spending extra time on advanced UI/UX animations or design refinements.
+
+- **Minimal error handling**  
+  I handled essential edge cases (invalid coordinates, null values), but did not implement a fully robust error handling or retry system for API failures.
+
+- **No API response caching**  
+  Each search request directly calls the API. For a production-ready system, caching (e.g., using SWR/React Query or backend caching) would reduce redundant API calls.
+
+- **Simplified state management**  
+  Redux is used, but the structure is kept simple. In a larger system, I would modularize slices and normalize state more strictly.
+
+- **No debouncing for search input (if applicable)**  
+  To save time, I did not fully optimize API calls for search input using debouncing/throttling.
+
+These decisions allowed me to ensure the core features were reliable while acknowledging areas for future improvement.
+|
+
+
+
+
+
+## 2. Refactoring for scalability
+
+If this application needed to scale (more users, more data, additional features), I would focus on the following improvements:
+
+- **API layer abstraction**
+  Currently, API calls are directly used in components or simple utilities. I would introduce a dedicated service layer (or hooks) to centralize API logic and improve maintainability.
+
+- **Introduce caching and data fetching optimization**
+  I would integrate tools like React Query or SWR to:
+  - cache API responses
+  - reduce redundant requests
+  - improve performance and UX
+
+- **Improve state management structure**
+  As the app grows, I would refactor Redux into a more modular architecture with clearly separated slices and normalized state.
+
+- **Map performance optimization**
+  For handling many markers or large datasets:
+  - clustering markers
+  - lazy loading map data
+  - limiting re-renders
+
+- **Component modularization**
+  Break down large components into smaller reusable ones to improve readability and scalability.
+
+- **Environment & API key security**
+  Move all API handling to a backend proxy (Next.js API routes) to fully secure API keys and control usage.
+
+- **Testing**
+  Add unit and integration tests to ensure stability as new features are added.
+
+These changes would make the application more maintainable, performant, and production-ready.

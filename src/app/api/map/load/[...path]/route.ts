@@ -65,7 +65,6 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error("Map Proxy Error:", error);
     return new NextResponse("Internal Server Error fetching map data", { status: 500 });
   }
 }

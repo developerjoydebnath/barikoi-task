@@ -1,10 +1,5 @@
-import { InputHTMLAttributes, useEffect, useState } from "react";
-
-interface DebounceInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
-  value: string;
-  onChange: (value: string) => void;
-  debounceTimeout?: number;
-}
+import { DebounceInputProps } from "@/shared/types/types";
+import { useEffect, useState } from "react";
 
 export function DebounceInput({
   value: initialValue,
@@ -14,7 +9,7 @@ export function DebounceInput({
 }: DebounceInputProps) {
   const [value, setValue] = useState(initialValue);
 
-  // Sync internal state with external bound values
+  // sync internal state with external bound values
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(initialValue);

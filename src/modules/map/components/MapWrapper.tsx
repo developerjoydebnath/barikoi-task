@@ -1,8 +1,8 @@
 'use client'
 
+import { useLazyGetReverseGeocodeQuery, useLazyGetRouteOverviewQuery } from '@/modules/map/features/locationApi';
+import { setActiveInput, setEndLocation, setOpen, setRouteData, setRouteInfo, setSearchedText, setSelectedLocation, setStartLocation } from '@/modules/map/features/locationSlice';
 import Map from '@/shared/components/map/Map';
-import { useLazyGetReverseGeocodeQuery, useLazyGetRouteOverviewQuery } from '@/shared/features/locations/locationApi';
-import { setActiveInput, setEndLocation, setOpen, setRouteData, setRouteInfo, setSearchedText, setSelectedLocation, setStartLocation } from '@/shared/features/locations/locationSlice';
 import { RootState } from '@/shared/store/store';
 import { LineStringGeometry } from '@/shared/types/types';
 import { useEffect } from 'react';

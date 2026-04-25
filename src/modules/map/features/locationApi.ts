@@ -1,5 +1,5 @@
+import { apiSlice } from "@/shared/features/api/apiSlice";
 import { Place, Route, Waypoint } from "@/shared/types/types";
-import { apiSlice } from "../api/apiSlice";
 
 export const locationApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

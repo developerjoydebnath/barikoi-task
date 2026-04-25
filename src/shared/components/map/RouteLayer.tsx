@@ -9,6 +9,7 @@ export default function RouteLayer() {
 
   if (!isDirectionMode || !routeData) return null;
 
+  // create geojson object
   const geojson = {
     type: 'Feature' as const,
     properties: {},
@@ -25,12 +26,11 @@ export default function RouteLayer() {
           'line-cap': 'round'
         }}
         paint={{
-          'line-color': '#3b82f6', // Tailwind blue-500
+          'line-color': '#3b82f6',
           'line-width': 6,
           'line-opacity': 0.8
         }}
       />
-      {/* Outer border for the line to make it look better */}
       <Layer
         id="route-layer-outline"
         type="line"
@@ -39,7 +39,7 @@ export default function RouteLayer() {
           'line-cap': 'round'
         }}
         paint={{
-          'line-color': '#2563eb', // Tailwind blue-600
+          'line-color': '#2563eb',
           'line-width': 2,
           'line-opacity': 1
         }}

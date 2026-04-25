@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Barikoi",
-  description: "Barikoi Test",
+  title: "Barikoi Map",
+  description: "Map Integration with Barikoi API",
 };
 
 export default function RootLayout({

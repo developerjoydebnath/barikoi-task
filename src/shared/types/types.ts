@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from "react";
 import { MapLayerMouseEvent } from "react-bkoi-gl";
 
 // map component props type
@@ -49,4 +50,10 @@ export type Waypoint = {
   distance?: number;
   name?: string | null;
   location?: [number, number];
+}
+
+export interface DebounceInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+  value: string;
+  onChange: (value: string) => void;
+  debounceTimeout?: number;
 }
